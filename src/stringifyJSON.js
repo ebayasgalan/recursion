@@ -1,8 +1,39 @@
-// this is what you would do if you liked things to be easy:
 // var stringifyJSON = JSON.stringify;
-
-// but you don't so you're going to write it from scratch:
+// console.log(stringifyJSON);
 
 var stringifyJSON = function(obj) {
-  // your code goes here
+
+  var keyAndValues = [];
+  var values = [];
+  var objKeys = [];
+
+  // CHECK FOR ARRAY
+  if (Array.isArray(obj)) {
+    //check for empty array
+    if (obj[0] === undefined) { return '[]'; } else {
+      obj.forEach(function(element) {
+        values.push(stringifyJSON(element));
+      });
+      return '[' + values + ']';
+    }
+  }
+  // CHECK FOR PRIMITIVE TYPES
+  if (typeof obj === 'boolean' || typeof obj === 'number' || obj === null) { return '' + obj; } else if (typeof obj === 'string') { return '"' + obj + '"'; }
+
+  // CHECK FOR OBJECTS
+  if (obj instanceof Object) {
+    objKeys = Object.keys(obj);
+    //set keys as strings and assign values
+    objKeys.forEach(function(key) {
+      var keyProperty = '"' + key + '":';
+      var objValue = obj[key];
+      //skip functions and undefined values
+      if (typeof objValue === undefined || objValue instanceof Function ) { keyAndValues.push(''); } else if (typeof objValue === 'string') { keyAndValues.push(keyProperty + '"' + objValue + '"'); } else if (typeof objValue === 'number' || typeof objValue === 'boolean' || objValue === null) { keyAndValues.push(keyProperty + objValue); }
+      //check if there's nested objects, call recursively until no more
+      if (objValue instanceof Object) {
+        keyAndValues.push(keyProperty + stringifyJSON(objValue));
+      }
+    });
+    return '{' + keyAndValues + '}';
+  }
 };
