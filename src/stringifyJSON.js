@@ -28,12 +28,12 @@ var stringifyJSON = function(obj) {
       var keyProperty = '"' + key + '":';
       var objValue = obj[key];
       //skip functions and undefined values
-      if (typeof objValue === undefined || objValue instanceof Function ) { keyAndValues.push(''); } else if (typeof objValue === 'string') { keyAndValues.push(keyProperty + '"' + objValue + '"'); } else if (typeof objValue === 'number' || typeof objValue === 'boolean' || objValue === null) { keyAndValues.push(keyProperty + objValue); }
-      //check if there's nested objects, call recursively until no more
-      if (objValue instanceof Object) {
+      if (typeof objValue === undefined || objValue instanceof Function ) { keyAndValues.push(''); } else if (typeof objValue === 'string') { keyAndValues.push(keyProperty + '"' + objValue + '"'); } else if (typeof objValue === 'number' || typeof objValue === 'boolean' || objValue === null) { keyAndValues.push(keyProperty + objValue); } else if (objValue instanceof Object) {
+        //check if there's nested objects, call recursively until no more
         keyAndValues.push(keyProperty + stringifyJSON(objValue));
       }
     });
     return '{' + keyAndValues + '}';
   }
 };
+
