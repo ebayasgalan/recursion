@@ -1,6 +1,3 @@
-// var stringifyJSON = JSON.stringify;
-// console.log(stringifyJSON);
-
 var stringifyJSON = function(obj) {
 
   var keyAndValues = [];
